@@ -15,6 +15,7 @@ namespace C_Sharp_Game_Practice_TicTacToe
         string currentCell = "x"; //this is what the current user's cell type
         string nextCell = "o"; //this is what the next user's cell type
         Cell[,] cellLocation = new Cell[3, 3];
+        Image currentCellImage;
 
         /// <summary>
         /// when the form is initialized, all picturebox's click event call one handler
@@ -34,7 +35,7 @@ namespace C_Sharp_Game_Practice_TicTacToe
         }
 
         /// <summary>
-        /// It handles events from picture boxes. 
+        /// It handles events from picture boxes' click. 
         /// if the current cell which the user chose is O, this changed a current image,
         /// and it compares neighbor cells.
         /// </summary>
@@ -42,9 +43,8 @@ namespace C_Sharp_Game_Practice_TicTacToe
         /// <param name="e"></param>
         public void ColumnClickEvent(object sender, EventArgs e)
         {
-            Image currentCellImage;
 
-            if (currentCell=="x")
+            if (currentCell == "x")
             {
                 currentCellImage = C_Sharp_Game_Practice_TicTacToe.Properties.Resources.ox_x;
                 nextCell = "o";
@@ -55,49 +55,57 @@ namespace C_Sharp_Game_Practice_TicTacToe
                 nextCell = "x";
             }
 
-            switch ((sender as PictureBox).Name)
+            //this variable recieve a clicked picturebox properties --Grace Seo
+            PictureBox clickedPicturebox = (sender as PictureBox);
+
+            if (clickedPicturebox.Image == null)
             {
-                case "pictureBox1":
-                    cellLocation[0, 0] = new Cell(currentCellImage, currentCell);
-                    pictureBox1.Image = currentCellImage;
-                    pictureBox1.Refresh();
-                    break;
-                case "pictureBox2":
-                    cellLocation[0, 1] = new Cell(currentCellImage, currentCell);
-                    pictureBox2.Image = currentCellImage;
-                    break;
-                case "pictureBox3":
-                    cellLocation[0, 2] = new Cell(currentCellImage, currentCell);
-                    pictureBox3.Image = currentCellImage;
-                    break;
-                case "pictureBox4":
-                    cellLocation[1, 0] = new Cell(currentCellImage, currentCell);
-                    pictureBox4.Image = currentCellImage;
-                    break;
-                case "pictureBox5":
-                    cellLocation[1, 1] = new Cell(currentCellImage, currentCell);
-                    pictureBox5.Image = currentCellImage;
-                    break;
-                case "pictureBox6":
-                    cellLocation[1, 2] = new Cell(currentCellImage, currentCell);
-                    pictureBox6.Image = currentCellImage;
-                    break;
-                case "pictureBox7":
-                    cellLocation[2, 0] = new Cell(currentCellImage, currentCell);
-                    pictureBox7.Image = currentCellImage;
-                    break;
-                case "pictureBox8":
-                    cellLocation[2, 1] = new Cell(currentCellImage, currentCell);
-                    pictureBox8.Image = currentCellImage;
-                    break;
-                case "pictureBox9":
-                    cellLocation[2, 2] = new Cell(currentCellImage, currentCell);
-                    pictureBox9.Image = currentCellImage;
-                    break;
-                default:
-                    break;
+                clickedPicturebox.Image = currentCellImage;
+
+                //Check picturebox's name, and call a method which inputs cell into a cell array, and check it's winner
+                switch (clickedPicturebox.Name)
+                {
+                    case "pictureBox1":
+                        CompareCell(0, 0);
+                        break;
+                    case "pictureBox2":
+                        CompareCell(0, 1);
+                        break;
+                    case "pictureBox3":
+                        CompareCell(0, 2);
+                        break;
+                    case "pictureBox4":
+                        CompareCell(1, 0);
+                        break;
+                    case "pictureBox5":
+                        CompareCell(1, 1);
+                        break;
+                    case "pictureBox6":
+                        CompareCell(1, 2);
+                        break;
+                    case "pictureBox7":
+                        CompareCell(2, 0);
+                        break;
+                    case "pictureBox8":
+                        CompareCell(2, 1);
+                        break;
+                    case "pictureBox9":
+                        CompareCell(2, 2);
+                        break;
+                    default:
+                        break;
+                }
+                currentCell = nextCell; //only this picturebox is empty, currentCell will be changed.
             }
-            currentCell = nextCell;
+        }
+        /// <summary>
+        /// inputs a cell into the cell array, and check it's winner by using row and column parameters
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        public void CompareCell(int row, int column)
+        {
+            cellLocation[row,column] = new Cell(currentCellImage, currentCell);
         }
     }
 }
